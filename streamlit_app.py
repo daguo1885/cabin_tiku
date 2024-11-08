@@ -161,11 +161,20 @@ def main_app():
 
 
 def result_show():
-    st.title('测试结果')
+    st.title('测试练习结果')
     timu_num = st.session_state['dx_tbl'].shape[0]
     ok_num = sum(st.session_state.dx_tbl['你的选择'] == st.session_state.dx_tbl['正确答案'])
     rat = ok_num / timu_num
-    st.write(f"共{timu_num}道题，你正确了{ok_num}道，正确率为{rat}")
+    if rat == 1:
+        st.balloons()
+        st.toast('太厉害了！恭喜你100%正确！加油！')
+    elif rat >= 0.9:
+        st.toast('非常优秀！加油！你还可以做的更好！')
+    elif rat >= 0.8:
+        st.toast('不错！继续努力！')
+    else:
+        st.toast('加油！多练练一定可以的！')
+    st.write(f"共{timu_num}道题，你正确了{ok_num}道，正确率为{rat*100:0.2f}%")
     df_wrong = st.session_state.dx_tbl.loc[st.session_state.dx_tbl['你的选择'] != st.session_state.dx_tbl['正确答案']]
 
     # 显示选择

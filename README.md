@@ -1,6 +1,6 @@
-# :earth_americas: GDP dashboard template
+# :earth_americas: 一个简易的题库练习
 
-A simple Streamlit app showing the GDP of different countries in the world.
+A simple Streamlit app showing the test based on question bank.
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://gdp-dashboard-template.streamlit.app/)
 

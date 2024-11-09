@@ -164,7 +164,7 @@ def main_app():
 
 
 def result_show():
-    st.subheader('测试练习结果')
+    st.markdown('<font size=4 color=darkblue>**练习测试结果**</font>', unsafe_allow_html=True)
     timu_num = st.session_state['dx_tbl'].shape[0]
     ok_num = sum(st.session_state.dx_tbl['你的选择'] == st.session_state.dx_tbl['正确答案'])
     rat = ok_num / timu_num

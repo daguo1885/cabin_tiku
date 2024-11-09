@@ -13,16 +13,16 @@ from streamlit import cache_data
 import streamlit.components.v1 as components
 warnings.simplefilter("ignore")
 CURRENT_PATH = os.path.dirname(__file__)
-pic = os.path.join(CURRENT_PATH, 'icon2.png')
+pic = os.path.join(CURRENT_PATH, r'icon2.png')
 
 
 # 初始化设置：streamlit页面基本配置
 def init_set(hide=False):
     st.set_page_config(
-        page_title="陆海新通道乘务员技能竞赛理论题",
-        page_icon=":rainbow:",
-        layout="wide",
-        initial_sidebar_state="auto"   # 侧边栏
+        page_title="技能竞赛理论题测试系统",
+        page_icon=":100:",
+        layout="wide",  # wide, centered
+        initial_sidebar_state="expanded"   # 侧边栏 auto
     )
     # 隐藏右边的菜单以及页脚
     hide_streamlit_style = """
@@ -63,7 +63,7 @@ def init_set(hide=False):
 # 侧边栏：登陆前授权码提示等；根据授权码判定用户
 def side_bar():
     st.sidebar.image(pic, width=200)
-    st.sidebar.markdown("<BR/><font size=4 color=darkgreen>**试题数量选择**</font>", unsafe_allow_html=True)
+    st.sidebar.markdown("<BR/><font size=4 color=darkblue>**试题数量选择**</font>", unsafe_allow_html=True)
     df = get_tiku().fillna('')
     dfa = df.loc[df['试题类型'] == '单选'].reset_index(drop=True)
     dfb = df.loc[df['试题类型'] == '判断'].reset_index(drop=True)
@@ -95,7 +95,7 @@ def get_tiku():
 
 
 def main_app():
-    st.title('乘务员技能竞赛理论题')
+    st.subheader(':rainbow[乘务员技能竞赛理论题]', divider='rainbow')
     df = get_tiku().fillna('')
     dfa = df.loc[df['试题类型'] == '单选'].reset_index(drop=True)
     dfb = df.loc[df['试题类型'] == '判断'].reset_index(drop=True)
@@ -104,45 +104,48 @@ def main_app():
     show_area = st.empty()
     with show_area.container():
         # 生成单选题
-        st.subheader('单选题')
+        st.markdown("<br/>", unsafe_allow_html=True)
+        st.markdown('<font size=4 color=darkblue>**一. 单项选择题**</font>', unsafe_allow_html=True)
         dx_tbl = pd.DataFrame(None, columns=['题目', '你的选择', '正确答案'])
         for i, j in enumerate(st.session_state['danxuan']):
             _sel = []
             _sel_a = ''
             for z in ['A', 'B', 'C', 'D']:
                 if dfa[z][j] !="":
-                    _sel.append(z + '. ' +dfa[z][j])
-                    _sel_a = _sel_a + '\n' + z + '. ' +dfa[z][j]
-
-            _tigan = f"单选第{i+1}题：{dfa['试题题干'][j]}"
-            xuz = st.radio(_tigan, _sel, None)
+                    _sel.append(z + '. ' + str(dfa[z][j]))
+                    _sel_a = _sel_a + '\n' + z + '. ' + str(dfa[z][j])
+            _tigan = f"[单选第{i+1}题]  {dfa['试题题干'][j]}"
+            st.markdown("<br/>", unsafe_allow_html=True)
+            xuz = st.radio(":blue" + _tigan, _sel, None, horizontal=True)
             if xuz is not None:
                 xuz = xuz[0]
             df = pd.DataFrame([[_tigan + "\n" + _sel_a, xuz, dfa['答案'][j]]], columns=['题目', '你的选择', '正确答案'])
             dx_tbl = pd.concat([dx_tbl, df])
 
         # 生成判断题
-        st.subheader('判断题')
+        st.markdown('<font size=4 color=darkblue>**二. 判断题**</font>', unsafe_allow_html=True)
         for i, j in enumerate(st.session_state['panduan']):
+            st.markdown("<br/>", unsafe_allow_html=True)
             _sel_1 = []
-            _tigan_1 = f"判断第{i+1}题：{dfb['试题题干'][j]}"
-            xuz_1 = st.radio(_tigan_1, ['正确', '错误'], None)
+            _tigan_1 = f"[判断第{i+1}题]  {dfb['试题题干'][j]}"
+            xuz_1 = st.radio(":blue" + _tigan_1, ['正确', '错误'], None, horizontal=True)
             df1 = pd.DataFrame([[_tigan_1, xuz_1, dfb['答案'][j]]], columns=['题目', '你的选择', '正确答案'])
             dx_tbl = pd.concat([dx_tbl, df1])
 
         # 生成多选题
-        st.subheader('多选题')
+        st.markdown('<font size=4 color=darkblue>**三. 多项选择题**</font>', unsafe_allow_html=True)
         for i, j in enumerate(st.session_state['duoxuan']):
-            _tigan_2 = f"多选第{i+1}题：{dfc['试题题干'][j]}"
-            st.write(_tigan_2)
+            st.markdown("<br/>", unsafe_allow_html=True)
+            _tigan_2 = f"[多选第{i+1}题]  {dfc['试题题干'][j]}"
+            st.write(":blue" + _tigan_2)
             _sel_2 = []
             _sel_2_a = ''
             xuz_2 = ''
             for z in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']:
                 if dfc[z][j] !="":
-                    _sel_2.append(z + '. ' +dfc[z][j])
-                    _sel_2_a = _sel_2_a + '\n' + z + '. ' +dfc[z][j]
-                    ans_a = st.checkbox(z + '. ' + dfc[z][j])
+                    _sel_2.append(z + '. ' + str(dfc[z][j]))
+                    _sel_2_a = _sel_2_a + '\n' + z + '. ' + str(dfc[z][j])
+                    ans_a = st.checkbox(z + '. ' + str(dfc[z][j]))
                     if ans_a:
                         xuz_2 += z
 
@@ -161,7 +164,7 @@ def main_app():
 
 
 def result_show():
-    st.title('测试练习结果')
+    st.subheader('测试练习结果')
     timu_num = st.session_state['dx_tbl'].shape[0]
     ok_num = sum(st.session_state.dx_tbl['你的选择'] == st.session_state.dx_tbl['正确答案'])
     rat = ok_num / timu_num
@@ -192,9 +195,10 @@ def stat_change():
 
 
 def index_page():
-    st.title('乘务技能竞赛理论题训练')
-    st.write('技能竞赛练习试题库在线测试')
+    st.subheader(':rainbow[技能竞赛理论题测试系统]', divider='rainbow')
+    st.write('技能竞赛理论试题在线刷题工具')
     st.write('👈️请在侧边栏选择试题生成数量并刷新试题')
+
 
 def show_table(df, **kwargs):
     """

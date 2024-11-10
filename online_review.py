@@ -117,7 +117,7 @@ def main_page(bar):
         for i in num_id:
             j = df.loc[df['序号'] == i].index[0]
             _sel_2 = df['试题题干'][j]
-            st.write(':blue[' + df['试题类型'][j] + '题]')
+            st.write(':blue[**' + df['试题类型'][j] + '题**]')
             for z in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']:
                 if df[z][j] != "":
                     _sel_2 = _sel_2 + '\n' + z + '. ' + str(df[z][j])

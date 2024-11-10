@@ -15,7 +15,7 @@ from streamlit import cache_data
 import streamlit.components.v1 as components
 warnings.simplefilter("ignore")
 CURRENT_PATH = os.path.dirname(__file__)
-pic = r'static\icon2.png'
+pic = r'icon2.png'
 
 
 # 初始化设置：streamlit页面基本配置

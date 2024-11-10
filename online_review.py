@@ -125,7 +125,7 @@ def main_page(bar):
             st.markdown('</br>', unsafe_allow_html=True)
             st.caption(f'正确答案：{df['答案'][j]}')
             st.divider()
-    if st.button('下一题'):
+    if st.button('下一题', icon='⤵️'):
         st.session_state.numstep += 1
         st.rerun()
 

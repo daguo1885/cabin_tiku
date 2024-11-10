@@ -110,9 +110,9 @@ def main_page(bar):
             if df[z][j] != "":
                 _sel_2 = _sel_2 + '\n' + z + '. ' + str(df[z][j])
         st.text(_sel_2)
-        st.divider()
-        st.caption(f'正确答案：{df['答案'][j]}')
         st.markdown('</br>', unsafe_allow_html=True)
+        st.caption(f'正确答案：{df['答案'][j]}')
+        st.divider()
     else:
         for i in num_id:
             j = df.loc[df['序号'] == i].index[0]
@@ -122,13 +122,12 @@ def main_page(bar):
                 if df[z][j] != "":
                     _sel_2 = _sel_2 + '\n' + z + '. ' + str(df[z][j])
             st.text(_sel_2)
-            st.divider()
+            st.markdown('</br>', unsafe_allow_html=True)
             st.caption(f'正确答案：{df['答案'][j]}')
-
+            st.divider()
     if st.button('下一题'):
         st.session_state.numstep += 1
         st.rerun()
-
 
     st.markdown('</br>', unsafe_allow_html=True)
     st.markdown('</br>', unsafe_allow_html=True)

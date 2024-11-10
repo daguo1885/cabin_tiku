@@ -2,8 +2,6 @@
 # create time:2024-11-07
 __author__ = 'Daguo'
 
-from operator import index
-
 import streamlit as st
 import pandas as pd
 from datetime import datetime, date, timedelta
@@ -15,7 +13,7 @@ from streamlit import cache_data
 import streamlit.components.v1 as components
 warnings.simplefilter("ignore")
 CURRENT_PATH = os.path.dirname(__file__)
-pic = r'static\icon2.png'
+pic = os.path.join(CURRENT_PATH, r'icon2.png')
 
 
 # 初始化设置：streamlit页面基本配置
@@ -26,8 +24,6 @@ def init_set(hide=False):
         layout="wide",  # wide, centered
         initial_sidebar_state="expanded"   # 侧边栏 auto
     )
-
-    # st.logo(pic, size='large')
     # 隐藏右边的菜单以及页脚
     hide_streamlit_style = """
         <style>
@@ -63,25 +59,21 @@ def init_set(hide=False):
     if 'result' not in st.session_state:
         st.session_state.result = False
 
-    if 're_run_index' not in st.session_state:
-        st.session_state.re_run_index = True
-
 
 # 侧边栏：登陆前授权码提示等；根据授权码判定用户
-def side_bar(bar):
-    bar.empty()
-    with bar.container():
-        st.markdown("<BR/><font size=4 color=darkblue>**试题数量选择**</font>", unsafe_allow_html=True)
-        df = get_tiku().fillna('')
-        dfa = df.loc[df['试题类型'] == '单选'].reset_index(drop=True)
-        dfb = df.loc[df['试题类型'] == '判断'].reset_index(drop=True)
-        dfc = df.loc[df['试题类型'] == '多选'].reset_index(drop=True)
-        # with st.sidebar.form("试题选择"):
-        dx = st.slider('单选题数量', 0, 50, 10)
-        pd = st.slider('判断题数量', 0, 50, 10)
-        mx = st.slider('多选题数量', 0, 50, 10)
-       # sd_btn = st.form_submit_button('生成试卷')
-        sd_btn = st.button('刷新试卷')
+def side_bar():
+    st.sidebar.image(pic, width=200)
+    st.sidebar.markdown("<BR/><font size=4 color=darkblue>**试题数量选择**</font>", unsafe_allow_html=True)
+    df = get_tiku().fillna('')
+    dfa = df.loc[df['试题类型'] == '单选'].reset_index(drop=True)
+    dfb = df.loc[df['试题类型'] == '判断'].reset_index(drop=True)
+    dfc = df.loc[df['试题类型'] == '多选'].reset_index(drop=True)
+    # with st.sidebar.form("试题选择"):
+    dx = st.sidebar.slider('单选题数量', 0, 50, 10)
+    pd = st.sidebar.slider('判断题数量', 0, 50, 10)
+    mx = st.sidebar.slider('多选题数量', 0, 50, 10)
+   # sd_btn = st.form_submit_button('生成试卷')
+    sd_btn = st.sidebar.button('刷新试卷')
 
     if sd_btn:
         st.session_state['danxuan'] = random.sample(range(0, dfa.shape[0]), dx)
@@ -92,22 +84,6 @@ def side_bar(bar):
         # st.sidebar.write(st.session_state['danxuan'], dfa.shape[0])
         # st.sidebar.write(st.session_state['panduan'], dfa.shape[0])
         # st.sidebar.write(st.session_state['duoxuan'], dfa.shape[0])
-
-
-def menu_bar():
-    st.sidebar.image(pic, width=200)
-    st.sidebar.markdown("<br/>", unsafe_allow_html=True)
-
-    if st.sidebar.button('系统介绍', icon='🏠'):
-        st.session_state.sel_menu = '系统介绍'
-
-    if st.sidebar.button('在线学习', icon='📝'):
-        st.session_state.sel_menu = '在线学习'
-
-    if st.sidebar.button('在线测试', icon='✅'):
-        st.session_state.sel_menu = '在线测试'
-
-    st.session_state.sid = st.sidebar.empty()
     st.sidebar.divider()
     st.sidebar.caption(':copyright: 2024 ChongQingCabin by Daguo')
 
@@ -120,7 +96,6 @@ def get_tiku():
 
 def main_app():
     st.subheader(':rainbow[乘务员技能竞赛理论题]', divider='rainbow')
-
     df = get_tiku().fillna('')
     dfa = df.loc[df['试题类型'] == '单选'].reset_index(drop=True)
     dfb = df.loc[df['试题类型'] == '判断'].reset_index(drop=True)
@@ -221,10 +196,8 @@ def stat_change():
 
 def index_page():
     st.subheader(':rainbow[技能竞赛理论题测试系统]', divider='rainbow')
-    st.write('技能竞赛理论试题在线刷题工具，系统根据官方下发理论题库制作，集成题库学习和在线测试功能。')
-    st.write('在线学习可以自主选择:blue[**顺序复习、随机复习、批量阅读**]的方式。')
-    st.write('在线测试可以自定义生成试卷时各种题型的数量。')
-    st.write('👈️请在侧边菜单栏选择相应功能')
+    st.write('技能竞赛理论试题在线刷题工具')
+    st.write('👈️请在侧边栏选择试题生成数量并刷新试题')
 
 
 def show_table(df, **kwargs):
@@ -292,25 +265,10 @@ def save_excel(df, file_name, *args, **kwargs):
 
 if __name__ == '__main__':
     init_set(hide=True)     # 初始化设置
-    menu_bar()
-
-    if 'sel_menu' not in st.session_state:
+    side_bar()          # 导航栏
+    if st.session_state.index:
         index_page()
+    elif st.session_state.result:
+        result_show()
     else:
-        if st.session_state.sel_menu == '系统介绍':
-            index_page()
-        elif st.session_state.sel_menu == '在线测试':
-            side_bar(st.session_state.sid)  # 导航栏
-            if st.session_state.result:
-                result_show()
-            else:
-                if 'danxuan' not in st.session_state:
-                    st.subheader(':blue[请在左侧菜单刷新试卷]')
-                    st.write(":blue[提示：]你可以选择测试各类型题目的数量后刷新试卷")
-                else:
-                    main_app()
-        elif st.session_state.sel_menu == '在线学习':
-            from online_review import main_page
-            main_page(st.session_state.sid)
-        else:
-            index_page()
+        main_app()

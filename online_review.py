@@ -12,7 +12,7 @@ from streamlit import cache_data
 
 warnings.simplefilter("ignore")
 CURRENT_PATH = os.path.dirname(__file__)
-pic = r'icon2.png'
+pic = r'.\static\icon2.png'
 
 
 # 初始化设置：streamlit页面基本配置
@@ -105,7 +105,8 @@ def main_page(bar):
     if type(num_id) == int:
         j = df.loc[df['序号'] == num_id].index[0]
         _sel_2 = df['试题题干'][j]
-        st.write(':blue[**' + df['试题类型'][j] + '题**]')
+        st.markdown(f'<font size=3 color=darkblue><b>{df['试题类型'][j]}题</b></font>'
+                    f'<font size=3 color=gray>【题库序号{num_id}】</font>', unsafe_allow_html=True)
         for z in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']:
             if df[z][j] != "":
                 _sel_2 = _sel_2 + '\n' + z + '. ' + str(df[z][j])
@@ -117,7 +118,8 @@ def main_page(bar):
         for i in num_id:
             j = df.loc[df['序号'] == i].index[0]
             _sel_2 = df['试题题干'][j]
-            st.write(':blue[**' + df['试题类型'][j] + '题**]')
+            st.markdown(f'<font size=3 color=darkblue><b>{df['试题类型'][j]}题</b></font>'
+                        f'<font size=3 color=gray>【题库序号{i}】</font>', unsafe_allow_html=True)
             for z in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']:
                 if df[z][j] != "":
                     _sel_2 = _sel_2 + '\n' + z + '. ' + str(df[z][j])
@@ -125,9 +127,11 @@ def main_page(bar):
             st.markdown('</br>', unsafe_allow_html=True)
             st.caption(f'正确答案：{df['答案'][j]}')
             st.divider()
+
     if st.button('下一题', icon='⤵️'):
         st.session_state.numstep += 1
         st.rerun()
+
 
     st.markdown('</br>', unsafe_allow_html=True)
     st.markdown('</br>', unsafe_allow_html=True)

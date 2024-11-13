@@ -107,7 +107,7 @@ def main_page(bar):
         _sel_2 = df['试题题干'][j]
         st.markdown(f'<font size=3 color=darkblue><b>{df['试题类型'][j]}题</b></font>'
                     f'<font size=3 color=gray>【题库序号{num_id}】</font>', unsafe_allow_html=True)
-        for z in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']:
+        for z in ['A', 'B', 'C', 'D', 'E']:
             if df[z][j] != "":
                 _sel_2 = _sel_2 + '\n' + z + '. ' + str(df[z][j])
         st.text(_sel_2)
@@ -120,7 +120,7 @@ def main_page(bar):
             _sel_2 = df['试题题干'][j]
             st.markdown(f'<font size=3 color=darkblue><b>{df['试题类型'][j]}题</b></font>'
                         f'<font size=3 color=gray>【题库序号{i}】</font>', unsafe_allow_html=True)
-            for z in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']:
+            for z in ['A', 'B', 'C', 'D', 'E']:
                 if df[z][j] != "":
                     _sel_2 = _sel_2 + '\n' + z + '. ' + str(df[z][j])
             st.text(_sel_2)

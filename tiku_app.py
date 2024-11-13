@@ -166,7 +166,7 @@ def main_app():
             _sel_2 = []
             _sel_2_a = ''
             xuz_2 = ''
-            for z in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']:
+            for z in ['A', 'B', 'C', 'D', 'E']:
                 if dfc[z][j] !="":
                     _sel_2.append(z + '. ' + str(dfc[z][j]))
                     _sel_2_a = _sel_2_a + '\n' + z + '. ' + str(dfc[z][j])

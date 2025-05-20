@@ -92,14 +92,14 @@ def main_page(bar):
     if sel_way == '随机复习':
         num_id = random.sample(range(0, df.shape[0]), 1)[0]
     elif sel_way == '顺序复习':
-        start_num = bar_ct.slider('请选择开始题号', 1, 1480, 1, on_change=order_b)
+        start_num = bar_ct.slider('请选择开始题号', 1, 130, 1, on_change=order_b)
         if st.session_state.re_run_index:
             st.session_state.numstep = 0
             st.session_state.re_run_index = False
         num_id = start_num + st.session_state.numstep
     elif sel_way == '批量浏览':
-        start_num = bar_ct.slider('请选择开始题号', 1, 1480, 1, on_change=order_b)
-        cnt = bar_ct.number_input('请选择题目数量', value=50)
+        start_num = bar_ct.slider('请选择开始题号', 1, 130, 1, on_change=order_b)
+        cnt = bar_ct.number_input('请选择题目数量', value=20)
         num_id = [start_num + i for i in range(0, cnt)]
 
     if type(num_id) == int:

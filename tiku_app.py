@@ -79,8 +79,8 @@ def side_bar(bar):
         dfb = df.loc[df['试题类型'] == '判断'].reset_index(drop=True)
         dfc = df.loc[df['试题类型'] == '多选'].reset_index(drop=True)
         # with st.sidebar.form("试题选择"):
-        dx = st.slider('单选题数量', 0, 50, 10)
-        pd = st.slider('判断题数量', 0, 50, 10)
+        dx = st.slider('单选题数量', 0, 100, 10)
+        pd = st.slider('判断题数量', 0, 30, 10)
         # mx = st.slider('多选题数量', 0, 50, 10)
         mx = 0
        # sd_btn = st.form_submit_button('生成试卷')

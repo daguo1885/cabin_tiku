@@ -125,10 +125,10 @@ def menu_bar():
 
 @cache_data
 def get_tiku():
-    cox = sqlite3.connect('data.db')
-    # df = pd.read_excel('data.xlsx').fillna('')
+    # cox = sqlite3.connect('data.db')
+    df = pd.read_excel('data.xlsx').fillna('')
     # df.to_sql('data', cox, if_exists='replace')
-    df = pd.read_sql("select * from data", cox)
+    # df = pd.read_sql("select * from data", cox)
     return df
 
 
